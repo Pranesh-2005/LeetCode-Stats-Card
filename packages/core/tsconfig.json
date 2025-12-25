@@ -19,10 +19,15 @@
     "sourceMap": true,
     "esModuleInterop": true,
 
-    "types": [],
-
     "skipLibCheck": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "tsup.config.ts"]
+  "include": [
+    "src",
+    "api"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tsup.config.ts"
+  ]
 }
