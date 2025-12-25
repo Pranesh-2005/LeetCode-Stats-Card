@@ -1,6 +1,9 @@
 {
     "private": true,
     "name": "leetcode-card-monorepo",
+    "workspaces": [
+    "packages/*"
+  ],
     "version": "1.0.1",
     "description": "Show your dynamically generated LeetCode stats on your GitHub profile or your website!",
     "license": "MIT",
