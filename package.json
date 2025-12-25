@@ -19,7 +19,7 @@
         "build:worker": "pnpm run --filter cloudflare-worker build",
         "build:package": "pnpm run --filter leetcode-card build",
         "build:image": "selflare compile --script packages/cloudflare-worker/dist/worker.js && docker compose build",
-        "build": "pnpm -r build",
+        "build": "pnpm --filter core build",
         "format": "prettier --write . --ignore-path .gitignore",
         "lint": "eslint ."
     },
