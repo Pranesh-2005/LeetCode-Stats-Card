@@ -1,34 +1,41 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type { IncomingMessage, ServerResponse } from "http";
 
-// IMPORTANT: core package compiled output
+
 import generate from "../packages/core/dist/index.js";
 
 export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse
+  req: IncomingMessage & { query?: any },
+  res: ServerResponse & {
+    status?: (code: number) => any;
+    send?: (body: any) => any;
+    setHeader: (name: string, value: string) => void;
+  }
 ) {
   try {
-    const {
-      username = "pranesh_s_2005",
-      theme = "light",
-      animation = "true",
-      width = "500",
-      height = "200"
-    } = req.query;
+    const url = new URL(req.url ?? "", "http://localhost");
+    const params = url.searchParams;
+
+    const username = params.get("username") ?? "pranesh_s_2005";
+    const theme = params.get("theme") ?? "light";
+    const animation = params.get("animation") !== "false";
+    const width = Number(params.get("width") ?? 500);
+    const height = Number(params.get("height") ?? 200);
 
     const svg = await generate({
-      username: String(username),
-      theme: String(theme),
-      animation: animation === "true",
-      width: Number(width),
-      height: Number(height)
+      username,
+      theme,
+      animation,
+      width,
+      height,
     });
 
     res.setHeader("Content-Type", "image/svg+xml");
     res.setHeader("Cache-Control", "public, s-maxage=1800");
-    res.status(200).send(svg);
+    res.status?.(200);
+    res.send?.(svg);
   } catch (err: any) {
-    res.status(500).send(
+    res.status?.(500);
+    res.send?.(
       `<svg xmlns="http://www.w3.org/2000/svg">
         <text x="10" y="20">${err.message}</text>
       </svg>`
